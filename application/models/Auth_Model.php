@@ -33,4 +33,13 @@ class Auth_Model extends CI_Model
         }
         return FALSE;
     }
+    function getFullPartnerInfo($data){
+        $this->db->select('*');
+        $this->db->join('company_info', 'company_info.partner_id = partner.partner_id');
+        $q = $this->db->get_where('partner', $data);
+        if($q->num_rows()>0)
+        return array(true,$q->row());
+        else
+            return array(false,"error_info_not_exist");
+    }
 }

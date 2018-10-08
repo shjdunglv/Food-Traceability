@@ -1,4 +1,7 @@
-<?php (defined('BASEPATH')) OR exit('No direct script access allowed'); ?><!DOCTYPE html>
+<?php (defined('BASEPATH')) OR exit('No direct script access allowed');
+$system_name  = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
+?>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -6,7 +9,8 @@
     <link rel="shortcut icon" href="<?= $assets ?>images/icon.png"/>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link href="<?= $assets ?>dist/css/styles.css" rel="stylesheet" type="text/css"/>
-    <?= $Settings->rtl ? '<link href="' . $assets . 'dist/css/rtl.css" rel="stylesheet" />' : ''; ?>
+    <link href="<?= $assets ?>plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css"/>
+
     <script src="<?= $assets ?>plugins/jQuery/jQuery-2.1.4.min.js"></script>
 </head>
 <body class="skin-green fixed sidebar-mini">
@@ -14,12 +18,12 @@
 
     <header class="main-header">
         <a href="<?= admin_url(); ?>" class="logo">
-            <?php if ($store) { ?>
+            <?php if (isset($store)) { ?>
                 <span class="logo-mini"><?= $store->code; ?></span>
                 <span class="logo-lg"><?= isset($store->name) ? 'Food<b>Trace</b>' : $store->name; ?></span>
             <?php } else { ?>
-                <span class="logo-mini">POS</span>
-                <span class="logo-lg"><?= isset($Settings->site_name) ? 'Food<b>Trace</b>' : $Settings->site_name; ?></span>
+                <span class="logo-mini">Trace</span>
+                <span class="logo-lg"><?= isset($Settings->site_name) ? 'Food<b>Trace</b>' : $system_name ?></span>
             <?php } ?>
         </a>
         <nav class="navbar navbar-static-top" role="navigation">
@@ -32,44 +36,34 @@
             <ul class="nav navbar-nav pull-left">
                 <li class="dropdown hidden-xs">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img
-                                src="<?= $assets; ?>images/<?= $Settings->selected_language; ?>.png"
-                                alt="<?= $Settings->selected_language; ?>"></a>
+                                src="<?= $assets; ?>images/<?= $Settings['selected_language']; ?>.png"
+                                alt="<?= $Settings['selected_language']; ?>"></a>
                     <ul class="dropdown-menu">
                         <?php $scanned_lang_dir = array_map(function ($path) {
                             return basename($path);
                         }, glob(APPPATH . 'language/*', GLOB_ONLYDIR));
                         foreach ($scanned_lang_dir as $entry) { ?>
-                            <li><a href="<?= admin_url('pos/language/' . $entry); ?>"><img
+                            <li><a href="<?= admin_url('admin/language/' . $entry); ?>"><img
                                             src="<?= $assets; ?>images/<?= $entry; ?>.png"
                                             class="language-img"> &nbsp;&nbsp;<?= ucwords($entry); ?></a></li>
                         <?php } ?>
                     </ul>
                 </li>
-                <?php if ($Settings->multi_store && !$this->session->userdata('has_store_id') && $this->session->userdata('store_id')) { ?>
-                    <li>
-                        <a href="<?= admin_url('stores/deselect_store'); ?>" data-toggle="tooltip" data-placement="right"
-                           title="<?= lang('deselect_store'); ?>"><i class="fa fa-square"></i></a>
-                    </li>
-                <?php } ?>
+
             </ul>
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
                     <li class="hidden-xs hidden-sm"><a href="#" class="clock"></a></li>
                     <li class="hidden-xs"><a href="<?= admin_url(); ?>" data-toggle="tooltip" data-placement="bottom"
                                              title="<?= lang('dashboard'); ?>"><i class="fa fa-dashboard"></i></a></li>
-                    <?php if ($Admin) { ?>
+                    <?php if (isset($user_type)) { ?>
                         <li class="hidden-xs"><a href="<?= admin_url('settings'); ?>" data-toggle="tooltip"
                                                  data-placement="bottom" title="<?= lang('settings'); ?>"><i
                                         class="fa fa-cogs"></i></a></li>
                     <?php } ?>
-                    <?php if ($this->db->dbdriver != 'sqlite3') { ?>
-                        <li><a href="<?= admin_url('pos/view_bill'); ?>" target="_blank" data-toggle="tooltip"
-                               data-placement="bottom" title="<?= lang('view_bill'); ?>"><i
-                                        class="fa fa-desktop"></i></a></li>
-                    <?php } ?>
-                    <li><a href="<?= admin_url('pos'); ?>" data-toggle="tooltip" data-placement="bottom"
-                           title="<?= lang('pos'); ?>"><i class="fa fa-th"></i></a></li>
-                    <?php if ($Admin && $this->session->userdata('store_id')) { ?>
+
+
+                    <?php if ($user_type == 1 && $this->session->userdata('store_id')) { ?>
                         <li>
                             <a href="<?= admin_url('reports/alerts'); ?>" data-toggle="tooltip" data-placement="bottom"
                                title="<?= lang('alerts'); ?>">
@@ -113,7 +107,7 @@
                                 <img src="<?= base_url('uploads/avatar/' . ($this->session->userdata('avatar') ? $this->session->userdata('avatar') : 'default_avatar.png')) ?>"
                                      class="img-circle" alt="Avatar"/>
                                 <?php
-                                if (!$Admin) {
+                                if (!$user_type) {
                                     ?>
                                     <p>
                                         <?= $this->session->userdata('email'); ?>
@@ -129,7 +123,7 @@
                                        class="btn btn-default btn-flat"><?= lang('profile'); ?></a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="<?= admin_url('logout'); ?>"
+                                    <a href="<?= site_url('Auth/logout'); ?>"
                                        class="btn btn-default btn-flat<?= $this->session->userdata('register_id') ? ' logout' : ''; ?>"><?= lang('logout'); ?></a>
                                 </div>
                             </li>
@@ -143,32 +137,15 @@
     <aside class="main-sidebar">
         <section class="sidebar">
             <ul class="sidebar-menu">
-                <!-- <li class="header"><?= lang('mian_navigation'); ?></li> -->
 
                 <li class="mm_welcome"><a href="<?= admin_url(); ?>"><i class="fa fa-dashboard"></i>
                         <span><?= lang('dashboard'); ?></span></a></li>
 
 
-                <?php if ($Admin) { ?>
+                <?php if ($user_type == 1) { ?>
 
 
-                    <li class="treeview mm_products">
-                        <a href="#">
-                            <i class="fa fa-barcode"></i>
-                            <span><?= lang('products'); ?></span>
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li id="products_index"><a href="<?= admin_url('products'); ?>"><i
-                                            class="fa fa-circle-o"></i> <?= lang('list_products'); ?></a></li>
-                            <li id="products_add"><a href="<?= admin_url('products/add'); ?>"><i
-                                            class="fa fa-circle-o"></i> <?= lang('add_products'); ?></a></li>
-                            <li id="products_import"><a href="<?= admin_url('products/import'); ?>"><i
-                                            class="fa fa-circle-o"></i> <?= lang('import_products'); ?></a></li>
-                            <li class="divider"></li>
 
-                        </ul>
-                    </li>
                     <li class="treeview mm_company">
                         <a href="#">
                             <i class="fa fa-folder"></i>
@@ -184,46 +161,49 @@
                     </li>
 
 
-                    <li class="treeview mm_auth mm_user mm_suppliers">
+
+
+
+                <?php } else{ ?>
+                    <li id="auth_users"><a href="<?= partner_url('Profile/profile'); ?>"><i
+                                    class="fa fa-user"></i> <?= lang('profile'); ?></a>
+                    </li>
+                    <li class="treeview mm_products">
                         <a href="#">
-                            <i class="fa fa-users"></i>
-                            <span><?= lang('company'); ?></span>
+                            <i class="fa fa-barcode"></i>
+                            <span><?= lang('products'); ?></span>
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li id="auth_users"><a href="<?= admin_url('company'); ?>"><i
-                                            class="fa fa-circle-o"></i> <?= lang('list_company'); ?></a></li>
-                            <li id="auth_add"><a href="<?= admin_url('company/add'); ?>"><i
-                                            class="fa fa-circle-o"></i> <?= lang('add_company'); ?></a></li>
+                            <li id="products_index"><a href="<?= partner_url('product'); ?>"><i
+                                            class="fa fa-circle-o"></i> <?= lang('list_products'); ?></a></li>
+                            <li id="products_add"><a href="<?= partner_url('product/add'); ?>"><i
+                                            class="fa fa-circle-o"></i> <?= lang('add_products'); ?></a></li>
+                            <li id="products_import"><a href="<?= partner_url('product/import'); ?>"><i
+                                            class="fa fa-circle-o"></i> <?= lang('import_products'); ?></a></li>
+                            <li class="divider"></li>
+                            <li id="products_printBarcode"><a href="<?= partner_url('product/printBarcode'); ?>"  data-toggle="ajax"><i
+                                            class="fa fa-circle-o"></i> <?= lang('printBarcode'); ?></a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview mm_auth mm_user mm_suppliers">
+                        <a href="#">
+                            <i class="fa fa-cab"></i>
+                            <span><?= lang('product_type'); ?></span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li id="auth_users"><a href="<?= partner_url('productType'); ?>"><i
+                                            class="fa fa-circle-o"></i> <?= lang('list_product_type'); ?></a></li>
+                            <li id="auth_add"><a href="<?= partner_url('productType/add'); ?>"><i
+                                            class="fa fa-circle-o"></i> <?= lang('add_product_type'); ?></a></li>
                             <li class="divider"></li>
 
                         </ul>
                     </li>
-
-
-                <?php } else { ?>
-
-                    <li class="mm_products"><a href="<?= admin_url('products'); ?>"><i class="fa fa-barcode"></i>
-                            <span><?= lang('products'); ?></span></a></li>
-                    <li class="mm_categories"><a href="<?= admin_url('categories'); ?>"><i class="fa fa-folder-open"></i>
-                            <span><?= lang('company'); ?></span></a></li>
-
-                    <li class="treeview mm_customers">
-                        <a href="#">
-                            <i class="fa fa-users"></i>
-                            <span><?= lang('customers'); ?></span>
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li id="customers_index"><a href="<?= admin_url('customers'); ?>"><i
-                                            class="fa fa-circle-o"></i> <?= lang('list_customers'); ?></a></li>
-                            <li id="customers_add"><a href="<?= admin_url('customers/add'); ?>"><i
-                                            class="fa fa-circle-o"></i> <?= lang('add_customer'); ?></a></li>
-                        </ul>
-                    </li>
-
                 <?php } ?>
             </ul>
+            <div class="sidebar-background" style="background-image: url(<?= $assets ?>images/sidebar-1.jpg)"></div>
         </section>
     </aside>
 

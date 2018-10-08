@@ -50,6 +50,34 @@ $system_name  = $this->db->get_where('settings', array('type' => 'system_name'))
 
     <div class="container">
     <div class="row">
+        <div class="col-lg-12 alerts">
+            <div id="custom-alerts" style="display:none;">
+                <div class="alert alert-dismissable">
+                    <div class="custom-msg"></div>
+                </div>
+            </div>
+            <?php if (!empty($this->session->flashdata('error'))) { ?>
+                <div class="alert alert-danger alert-dismissable">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                    <h4><i class="icon fa fa-ban"></i> <?= lang('error'); ?></h4>
+                    <?= $this->session->flashdata('error') ?>
+                </div>
+            <?php }
+            if (!empty($this->session->flashdata('warning'))) { ?>
+                <div class="alert alert-warning alert-dismissable">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                    <h4><i class="icon fa fa-warning"></i> <?= lang('warning'); ?></h4>
+                    <?= $this->session->flashdata('warning'); ?>
+                </div>
+            <?php }
+            if (!empty($this->session->flashdata('message'))) { ?>
+                <div class="alert alert-success alert-dismissable">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                    <h4><i class="icon fa fa-check"></i> <?= lang('Success'); ?></h4>
+                    <?= $this->session->flashdata('message'); ?>
+                </div>
+            <?php } ?>
+        </div>
     <div class="col-md-12">
 
 

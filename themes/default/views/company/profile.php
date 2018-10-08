@@ -23,7 +23,7 @@
                             </div>
                             <div class="form-group">
                                 <?= lang('address_of_company', 'address_of_company'); ?>
-                                <?= form_input('address_of_company', $company->phone, 'class="form-control tip" id="address_of_company"  required="required"'); ?>
+                                <?= form_input('address_of_company',isset($company->phone)?$company->phone:'', 'class="form-control tip" id="address_of_company"  required="required"'); ?>
                             </div>
                             <div class="form-group">
                                 <?= lang('phone', 'phone'); ?>
@@ -32,27 +32,27 @@
 
 
 
-                                <div class="form-group">
-                                    <?= lang('email', 'email'); ?>
-                                    <?= form_input('email', $company->email, 'class="form-control tip" id="email"  required="required"'); ?>
-                                </div>
+                            <div class="form-group">
+                                <?= lang('email', 'email'); ?>
+                                <?= form_input('email', isset($company->email)?$company->email:'', 'class="form-control tip" id="email"  required="required"'); ?>
+                            </div>
                             <?php if ($Admin && $id != $this->session->userdata('user_id')) { ?>
                                 <div class="panel panel-warning">
                                     <div class="panel-heading"><?= lang('if_you_need_to_rest_password_for_user') ?></div>
                                     <div class="panel-body" style="padding: 5px;">
 
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <?php echo lang('password', 'password'); ?>
-                                                    <?php echo form_input($password); ?>
-                                                </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <?php echo lang('password', 'password'); ?>
+                                                <?php echo form_input($password); ?>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <?php echo lang('confirm_password', 'password_confirm'); ?>
-                                                    <?php echo form_input($password_confirm); ?>
-                                                </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <?php echo lang('confirm_password', 'password_confirm'); ?>
+                                                <?php echo form_input($password_confirm); ?>
                                             </div>
+                                        </div>
 
                                     </div>
                                 </div>
@@ -76,21 +76,21 @@
                             <div class="clearfix"></div>
                         </div>
 
-                            <div class="col-lg-6">
-                                <?=
-                                $company->photo_passport ? '<img alt="" src="' . base_url() . 'uploads/photo_passport/' . $company->photo_passport . '" class="avatar img-thumbnail img-rounded">' :
-                                    '<img alt="" src="' . base_url() . 'uploads/photo_passport/default_img.png" class="avatar img-thumbnail img-rounded">';
-                                ?>
+                        <div class="col-lg-6">
+                            <?=
+                            $company->photo_passport ? '<img alt="" src="' . base_url() . 'uploads/photo_passport/' . $company->photo_passport . '" class="avatar img-thumbnail img-rounded">' :
+                                '<img alt="" src="' . base_url() . 'uploads/photo_passport/default_img.png" class="avatar img-thumbnail img-rounded">';
+                            ?>
 
 
-                                <div class="form-group">
-                                    <?= lang("change_avatar", "change_avatar"); ?>
-                                    <input type="file" data-browse-label="<?= lang('browse'); ?>" name="avatar" id="product_image" required="required"
-                                           data-show-upload="false" data-show-preview="false" accept="image/*"
-                                           class="form-control file"/>
-                                </div>
-
+                            <div class="form-group">
+                                <?= lang("change_avatar", "change_avatar"); ?>
+                                <input type="file" data-browse-label="<?= lang('browse'); ?>" name="avatar" id="product_image" required="required"
+                                       data-show-upload="false" data-show-preview="false" accept="image/*"
+                                       class="form-control file"/>
                             </div>
+
+                        </div>
 
                     </div>
 

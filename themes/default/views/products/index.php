@@ -3,17 +3,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
 
-        function ptype(x) {
-            if (x == 'standard') {
-                return '<?= lang('standard'); ?>';
-            } else if (x == 'combo') {
-                return '<?= lang('combo'); ?>';
-            } else if (x == 'service') {
-                return '<?= lang('service'); ?>';
-            } else {
-                return x;
-            }
-        }
+        var style = "";
 
         function image(n) {
             if (n !== null) {
@@ -25,38 +15,32 @@
         function method(n) {
             return (n == 0) ? '<span class="label label-primary"><?= lang('inclusive'); ?></span>' : '<span class="label label-warning"><?= lang('exclusive'); ?></span>';
         }
-
-        var table = $('#prTables').DataTable({
-
-            // 'ajax': '<?=site_url('products/get_products/'.$store->id);?>',
-            'ajax' : { url: '<?=site_url('products/get_products/'.$store->id);?>', type: 'POST', "data": function ( d ) {
-                d.<?=$this->security->get_csrf_token_name();?> = "<?=$this->security->get_csrf_hash()?>";
-            }},
-            "buttons": [
-            { extend: 'copyHtml5', 'footer': false, exportOptions: { columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] } },
-            { extend: 'excelHtml5', 'footer': false, exportOptions: { columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] } },
-            { extend: 'csvHtml5', 'footer': false, exportOptions: { columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] } },
-            { extend: 'pdfHtml5', orientation: 'landscape', pageSize: 'A4', 'footer': false,
-            exportOptions: { columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] } },
-            { extend: 'colvis', text: 'Columns'},
+        var data = [ <?php foreach($product as $products){?>
+        [
+        '<?=$products->product_id?>',
+            '<?=$products->name?>',
+            '<?=$products->type_id?>',
+           '<?=$products->create_at?>',
+            '<?= lang("action") ?>'
             ],
-            "columns": [
-            { "data": "pid", "visible": false },
-            { "data": "image", "searchable": false, "orderable": false, "render": image },
-            { "data": "code" },
-            { "data": "pname" },
-            { "data": "type", "render": ptype },
-            { "data": "cname" },
-            { "data": "quantity", "render": quantityFormat },
-            { "data": "tax" },
-            { "data": "tax_method", "render": method },
-            <?php if ($Admin) { ?>
-            { "data": "cost", "render": currencyFormat, "searchable": false },
-            <?php } ?>
-            { "data": "price", "render": currencyFormat, "searchable": false },
-            { "data": "Actions", "searchable": false, "orderable": false }
-            ]
-
+        <?php } ?>
+        ];
+        var table = $('#prTables').DataTable({
+            dom: 'Bfrtip',
+            buttons: [{
+                extend: 'excelHtml5',
+                text: '<?=lang('export_excel')?>',
+            }
+            ],
+            "oLanguage": {
+                "sSearch": "<?=lang('quick_search')?>",
+                "oPaginate": {
+                    "sFirst": "<?=lang('first_page')?>", // This is the link to the first page
+                    "sPrevious": "<?=lang('previous_page')?>", // This is the link to the previous page
+                    "sNext": "<?=lang('next_page')?>", // This is the link to the next page
+                    "sLast": "<?=lang('last_page')?>" // This is the link to the last page
+                }
+            }
         });
 
         // $('#prTables tfoot th:not(:last-child, :nth-last-child(2), :nth-last-child(3))').each(function () {
@@ -101,7 +85,9 @@
             var code = $(this).attr('id');
             $('#myModalLabel').text(code);
             $('#product_image').attr('src',a_href);
-            $('#picModal').modal();
+            $.get(a_href, function (t) {
+                return $("#picModal").html(t), $("#picModal").modal({backdrop: "static"}), cActions(), !1
+            });
             return false;
         });
         $('#prTables').on('click', '.open-image', function() {
@@ -124,73 +110,40 @@
         <div class="col-xs-12">
             <div class="box box-primary">
                 <div class="box-header">
-                    <?php if (!$this->session->userdata('has_store_id')) { ?>
-                    <div class="dropdown pull-right">
-                      <button class="btn btn-primary" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <?= $store->name.' ('.$store->code.')'; ?>
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dLabel">
-                        <?php
-                        foreach ($stores as $st) {
-                            if ($store->id != $st->id) {
-                                echo "<li><a href='".site_url('products/?store_id='.$st->id)."'>{$st->name} ({$st->code})</a></li>";
-                            }
-                        }
-                        ?>
-                    </ul>
-                </div>
-                <?php } ?>
-                <h3 class="box-title"><?= lang('list_results'); ?></h3>
             </div>
             <div class="box-body">
                 <div class="table-responsive">
                     <table id="prTables" class="table table-striped table-bordered table-hover" style="margin-bottom:5px;">
                         <thead>
                             <tr class="active">
-                                <th style="max-width:30px;"><?= lang("id"); ?></th>
-                                <th style="max-width:30px;"><?= lang("image"); ?></th>
-                                <th class="col-xs-1"><?= lang("code"); ?></th>
+                                <th><?= lang("code"); ?></th>
                                 <th><?= lang("name"); ?></th>
-                                <th class="col-xs-1"><?= lang("type"); ?></th>
-                                <th class="col-xs-1"><?= lang("category"); ?></th>
-                                <th class="col-xs-1"><?= lang("quantity"); ?></th>
-                                <th class="col-xs-1"><?= lang("tax"); ?></th>
-                                <th class="col-xs-1"><?= lang("method"); ?></th>
-                                <?php if ($Admin) { ?>
-                                    <th class="col-xs-1"><?= lang("cost"); ?></th>
-                                <?php } ?>
-                                <th class="col-xs-1"><?= lang("price"); ?></th>
-                                <th style="width:165px;"><?= lang("actions"); ?></th>
+                                <th><?= lang("type"); ?></th>
+                                <th><?= lang("create_at"); ?></th>
+                                <th style="width:165px;"><?= lang("action"); ?></th>
                             </tr>
                         </thead>
                         <tbody>
+                        <?php if(isset($product))foreach($product as $product){?>
                             <tr>
-                                <td colspan="12" class="dataTables_empty"><?= lang('loading_data_from_server'); ?></td>
+                                <th><?=$product->product_id?></th>
+                                <th><?=$product->name?></th>
+                                <th><?=$product->type_id?></th>
+                                <th><?=$product->create_at?></th>
+                                <th style="width:165px;"><a id="1234" href="<?=partner_url("product/printBarcode/$product->product_id")?>" class="barcode">Print</a></th>
                             </tr>
+                        <?php } ?>
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th style="max-width:30px;"><input type="text" class="text_filter" placeholder="[<?= lang('id'); ?>]"></th>
-                                <th style="max-width:30px;"><?= lang("image"); ?></th>
-                                <th class="col-xs-1"><input type="text" class="text_filter" placeholder="[<?= lang('code'); ?>]"></th>
+                                <th><input type="text" class="text_filter" placeholder="[<?= lang('code'); ?>]"></th>
                                 <th><input type="text" class="text_filter" placeholder="[<?= lang('name'); ?>]"></th>
-                                <th class="col-xs-1"><input type="text" class="text_filter" placeholder="[<?= lang('type'); ?>]"></th>
-                                <th class="col-xs-1"><input type="text" class="text_filter" placeholder="[<?= lang('category'); ?>]"></th>
-                                <th class="col-xs-1"><input type="text" class="text_filter" placeholder="[<?= lang('quantity'); ?>]"></th>
-                                <th class="col-xs-1"><input type="text" class="text_filter" placeholder="[<?= lang('tax'); ?>]"></th>
-                                <th class="col-xs-1">
-                                    <select class="select2 select_filter"><option value=""><?= lang("all"); ?></option><option value="0"><?= lang("inclusive"); ?></option><option value="1"><?= lang("exclusive"); ?></option></select>
-                                </th>
-                                <?php if ($Admin) { ?>
-                                <th class="col-xs-1"><?= lang("cost"); ?></th>
-                                <?php } ?>
-                                <th class="col-xs-1"><?= lang("price"); ?></th>
-                                <th style="width:165px;"><?= lang("actions"); ?></th>
+                                <th><input type="text" class="text_filter" placeholder="[<?= lang('type'); ?>]"></th>
+                                <th><input type="text" class="text_filter" placeholder="[<?= lang('create_at'); ?>]"></th>
+                                <th style="width:165px;"><?= lang("action"); ?></th>
+
                             </tr>
-                            <tr>
-                                <td colspan="12" class="p0"><input type="text" class="form-control b0" name="search_table" id="search_table" placeholder="<?= lang('type_hit_enter'); ?>" style="width:100%;"></td>
-                            </tr>
+
                         </tfoot>
                     </table>
                 </div>
@@ -206,6 +159,7 @@
                             <div class="modal-body text-center">
                                 <img id="product_image" src="" alt="" />
                             </div>
+
                         </div>
                     </div>
                 </div>

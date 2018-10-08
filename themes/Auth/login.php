@@ -13,9 +13,9 @@
                     <?php endif; ?>
                     <p class="login-form-intro"><img src="<?php echo base_url() ?>assets/login_page/img/ava2.png" width="100"></p>
                     <?php if(isset($_GET['redirect'])) : ?>
-                        <?php echo form_open(site_url("login/pro/" . urlencode($_GET['redirect'])), array("id" => "login_form")) ?>
+                        <?php echo form_open(site_url("Auth/submit_login/" . urlencode($_GET['redirect'])), array("id" => "login_form")) ?>
                     <?php else : ?>
-                        <?php echo form_open(site_url("login/login"), array("id" => "login_form")) ?>
+                        <?php echo form_open(site_url("Auth/submit_login"), array("id" => "login_form")) ?>
                     <?php endif; ?>
                     <div class="form-group login-form-area has-feedback">
                         <input type="text" class="form-control" name="email" placeholder="<?php echo lang("email") ?>">
@@ -23,7 +23,7 @@
                     </div>
 
                     <div class="form-group login-form-area has-feedback">
-                        <input type="password" name="pass" class="form-control" placeholder="*********">
+                        <input type="password" name="password" class="form-control" placeholder="*********">
                         <i class="glyphicon glyphicon-lock form-control-feedback login-icon-color"></i>
                     </div>
 

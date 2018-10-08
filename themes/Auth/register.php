@@ -39,7 +39,7 @@
                     </div>
 
                     <p><input type="submit" class="btn btn-flat-login form-control" value="<?php echo lang("register") ?>"></p>
-                    <p class="decent-margin small-text"><a href="<?php echo site_url("login/forgotpw") ?>"><?php echo lang("forgot_your_password") ?></a> <span class="pull-right"><a href="<?php echo site_url("login") ?>"><?php echo lang("login") ?></a></span></p>
+                    <p class="decent-margin small-text"><a href="<?php echo site_url("login/forgotpw") ?>"><?php echo lang("forgot_your_password") ?></a> <span class="pull-right"><a href="<?php echo site_url("Authlogin") ?>"><?php echo lang("login") ?></a></span></p>
                 </div>
                 <div class="login-form-bottom clearfix">
 

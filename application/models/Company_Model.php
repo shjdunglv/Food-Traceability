@@ -33,5 +33,17 @@ class Company_Model extends CI_Model
         }
         return FALSE;
     }
+    public function updateCompanyInfo($data) {
+
+        //if no id was passed use the current users id
+        $id = filterOnly(['partner_id'],$data);
+        $data = filterOnly(['address','phone','name','photo_passport'],$data);
+        $this->db->where($id);
+        $this->db->update('company_info', $data);
+        if ($this->db->affected_rows() > 0) {
+            return array(true,lang("update_successly"));
+        }
+        return FALSE;
+    }
 }
 

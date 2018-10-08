@@ -12,7 +12,7 @@
                     <div id="edit_profile" class="tab-pane active">
                         <div class="col-lg-6">
                             <p><?= lang('update_info'); ?></p>
-                            <?=form_open('auth/edit_user/' . $company->id);?>
+                            <?=form_open_multipart(partner_url("Profile/updateProfile"));?>
                             <div class="form-group">
                                 <?= lang('code_of_company', 'code_of_company'); ?>
                                 <?= form_input('code_of_company', $company->id, 'class="form-control tip" id="first_name"  required="required" disabled'); ?>
@@ -23,7 +23,7 @@
                             </div>
                             <div class="form-group">
                                 <?= lang('address_of_company', 'address_of_company'); ?>
-                                <?= form_input('address_of_company', $company->phone, 'class="form-control tip" id="address_of_company"  required="required"'); ?>
+                                <?= form_input('address_of_company',isset($company->phone)?$company->phone:'', 'class="form-control tip" id="address_of_company"  required="required"'); ?>
                             </div>
                             <div class="form-group">
                                 <?= lang('phone', 'phone'); ?>
@@ -34,9 +34,9 @@
 
                                 <div class="form-group">
                                     <?= lang('email', 'email'); ?>
-                                    <?= form_input('email', $company->email, 'class="form-control tip" id="email"  required="required"'); ?>
+                                    <?= form_input('email', isset($company->email)?$company->email:'', 'class="form-control tip" id="email"  required="required" disabled'); ?>
                                 </div>
-                            <?php if ($Admin && $id != $this->session->userdata('user_id')) { ?>
+                            <?php if ($user_type && $id != $this->session->userdata('user_id')) { ?>
                                 <div class="panel panel-warning">
                                     <div class="panel-heading"><?= lang('if_you_need_to_rest_password_for_user') ?></div>
                                     <div class="panel-body" style="padding: 5px;">
@@ -61,7 +61,7 @@
                                     <?= lang('status', 'status'); ?>
                                     <?php
                                     $opt = array('' => '', 1 => lang('Active'), 0 => lang('Unconfirmed'), 2 => lang('Banned'));
-                                    echo form_dropdown('status', $opt, $company->status, 'id="status" data-placeholder="' . lang("select") . ' ' . lang("status") . '" class="form-control input-tip select2" style="width:100%;"');
+                                    echo form_dropdown('status', $opt, $company->status, 'id="status" data-placeholder="' . lang("select") . ' ' . lang("status") . '" class="form-control input-tip select2" disabled style="width:100%;"');
                                     ?>
                                 </div>
 
@@ -72,7 +72,7 @@
                             <div class="form-group">
                                 <?= form_submit('update_company_info', lang('update'), 'class="btn btn-primary"'); ?>
                             </div>
-                            <?= form_close(); ?>
+
                             <div class="clearfix"></div>
                         </div>
 
@@ -84,16 +84,14 @@
 
 
                                 <div class="form-group">
-                                    <?= lang("change_avatar", "change_avatar"); ?>
-                                    <input type="file" data-browse-label="<?= lang('browse'); ?>" name="avatar" id="product_image" required="required"
-                                           data-show-upload="false" data-show-preview="false" accept="image/*"
-                                           class="form-control file"/>
+                                    <?= lang('image', 'image'); ?>
+                                    <input type="file" name="userfile" id="image">
                                 </div>
 
                             </div>
 
                     </div>
-
+                    <?= form_close(); ?>
 
 
 

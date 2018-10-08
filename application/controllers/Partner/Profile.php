@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 
-class Profile extends BaseController
+class Profile extends UserController
 {
     public function __construct()
     {
@@ -10,23 +10,22 @@ class Profile extends BaseController
         $this->load->library('form_validation');
         $this->load->language("company", $this->language);
         $this->load->model('Company_Model');
+        $this->load->helper('filter');
     }
 
-    function profile($id = NULL)
+    function profile()
     {
-
-        if (!$id || empty($id)) {
-            show_404();
+        $id = $this->partner_id;
+        $this->load->model('Auth_Model');
+        $company = $this->Auth_Model->getFullPartnerInfo(array('partner.partner_id' => $id));
+        if (!$company[0]) {
+            redirect(site_url("Auth/login"));
             exit();
         }
-
-        $this->data['title'] = lang('profile');
-
-        $company = $this->Company_Model->company($id);
-        exit();
+        $company = $company[1];
         if (!$company) {
             $this->session->set_flashdata('error', lang("access_denied"));
-            redirect('Admin/Company/listCompany');
+            redirect('Partner/Profile/Profile');
         } else {
             $this->data['csrf'] = $this->_get_csrf_nonce();
             $this->data['company'] = $company;
@@ -72,7 +71,7 @@ class Profile extends BaseController
                 'name' => 'user_id',
                 'id' => 'user_id',
                 'type' => 'hidden',
-                'value' => $company->id,
+                'value' => $company->partner_id,
             );
 
             $this->data['id'] = $id;
@@ -84,23 +83,80 @@ class Profile extends BaseController
         }
     }
 
-    function _get_csrf_nonce()
+    function updateProfile()
     {
-        $this->load->helper('string');
-        $key = random_string('alnum', 8);
-        $value = random_string('alnum', 20);
-        $this->session->set_flashdata('csrfkey', $key);
-        $this->session->set_flashdata('csrfvalue', $value);
+        $this->form_validation->set_rules('address_of_company', lang("address_of_company"), 'min_length[2]|max_length[50]|required');
+        $this->form_validation->set_rules('phone', lang("phone"), 'required');
+        if (empty($_FILES['userfile']['name'])) {
+            $this->form_validation->set_rules('userfile', lang("photo_passport"), 'required');
 
-        return array($key => $value);
-    }
+        }
+        if ($this->form_validation->run() == true) {
 
-    function _valid_csrf_nonce()
-    {
-        if ($this->input->post($this->session->flashdata('csrfkey')) !== FALSE && $this->input->post($this->session->flashdata('csrfkey')) == $this->session->flashdata('csrfvalue')) {
-            return TRUE;
-        } else {
-            return FALSE;
+            //upload file
+            if ($_FILES['userfile']['size'] > 0) {
+
+                $this->load->library('upload');
+                $this->load->library('image_lib');
+
+                $config['upload_path'] = 'uploads/photo_passport';
+                $config['allowed_types'] = 'gif|jpg|png';
+//                $config['max_size'] = '500';
+//                $config['max_width'] = '800';
+//                $config['max_height'] = '800';
+                $config['overwrite'] = FALSE;
+                $config['encrypt_name'] = TRUE;
+                $this->upload->initialize($config);
+
+                if (!$this->upload->do_upload()) {
+                    $error = $this->upload->display_errors();
+                    $this->session->set_flashdata('error', $error);
+                    redirect(partner_url('Profile/profile'));
+                }
+
+
+                //create thumb
+                $photo = $this->upload->file_name;
+                $data['image'] = $photo;
+                createThumbs($photo);
+
+                //do insert to database
+                $data = array(
+                    'partner_id' => $this->partner_id,
+                    'address' => $this->input->post('address_of_company'),
+                    'phone' => $this->input->post('phone'),
+                    'name' => $this->input->post('name_of_company'),
+                    'photo_passport' => $photo
+                );
+                $this->Company_Model->updateCompanyInfo($data);
+
+                // $this->tec->print_arrays($data, $items);
+            } //Validateion error
+            else {
+                $this->session->set_flashdata('error', validation_errors());
+                redirect(partner_url('Profile/profile'));
+
+            }
         }
     }
+
+        function _get_csrf_nonce()
+        {
+            $this->load->helper('string');
+            $key = random_string('alnum', 8);
+            $value = random_string('alnum', 20);
+            $this->session->set_flashdata('csrfkey', $key);
+            $this->session->set_flashdata('csrfvalue', $value);
+
+            return array($key => $value);
+        }
+
+        function _valid_csrf_nonce()
+        {
+            if ($this->input->post($this->session->flashdata('csrfkey')) !== FALSE && $this->input->post($this->session->flashdata('csrfkey')) == $this->session->flashdata('csrfvalue')) {
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        }
 }

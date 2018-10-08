@@ -26,8 +26,16 @@
     lang['r_u_sure'] = '<?= lang('r_u_sure'); ?>';
     lang['no_match_found'] = '<?= lang('no_match_found'); ?>';
 </script>
-
-<script src="<?= $assets ?>dist/js/libraries.min.js" type="text/javascript"></script>
+<script src="<?= $assets ?>dist/js/adminLTE.js" type="text/javascript"></script>
+<script src="<?= $assets ?>plugins/select2/select2.js" type="text/javascript"></script>
+<script src="<?= $assets ?>plugins/filestyle/bootstrap-filestyle.js" type="text/javascript"></script>
+<script src="<?= $assets ?>plugins/formvalidation/js/formValidation.js" type="text/javascript"></script>
+<script src="<?= $assets ?>plugins/formvalidation/js/framework/bootstrap.js" type="text/javascript"></script>
+<script src="<?= $assets ?>plugins/iCheck/icheck.js" type="text/javascript"></script>
+<script src="<?= $assets ?>plugins/redactor/redactor.min.js" type="text/javascript"></script>
+<script src="<?= $assets ?>plugins/datatables/datatables.min.js" type="text/javascript"></script>
+<script src="<?= $assets ?>plugins/datatables/jszip.min.js" type="text/javascript"></script>
+<script src="<?= $assets ?>plugins/datatables/buttons.html5.min.js" type="text/javascript"></script>
 <script src="<?= $assets ?>dist/js/scripts.min.js" type="text/javascript"></script>
 </body>
 </html>

@@ -335,5 +335,27 @@ $lang['products'] = 'Sản phẩm';
 $lang['register'] = 'Đăng ký';
 $lang['login'] = 'Đăng nhập';
 $lang['register_successly_callback'] = 'Đăng ký thành công, mời bạn cập nhật ảnh CMT để được xác nhận đăng ký';
+$lang['add_product_type'] = 'Thêm dòng sản phẩm';
+$lang['list_product_type'] = 'Danh sách dòng sản phẩm';
+$lang['product_type'] = 'Dòng sản phẩm';
+$lang['setting_product'] = 'Cấu hình dòng sản phẩm';
+$lang['create_at'] = 'Được tạo lúc';
+$lang['code'] = 'Mã';
+$lang['export_excel'] = 'Xuất file Excel';
+$lang['quick_search'] = 'Tìm kiếm nhanh:';
+$lang['first_page'] = 'Trang đầu';
+$lang['previous_page'] = 'Trang trước';
+$lang['next_page'] = 'Trang kế';
+$lang['last_page'] = 'Trang cuối';
+$lang['create_image_successly'] = 'Tạo ảnh mới thành công';
+$lang['photo_passport'] = 'Tạo ảnh mới thành công';
+$lang['update_successly'] = 'Cập nhật thành công';
+$lang['printBarcode'] = 'In mã Barcode';
+$lang['invalid_login'] = 'Thông tin đăng nhập không chính xác';
+$lang['import'] = 'Thêm';
+$lang['csv1'] = 'File CSV hợp lệ bao gồm các cột';
+$lang['csv2'] = 'Bạn phải tải file mẫu về';
+$lang['download_sample_file'] = 'Tải file mẫu';
+$lang['products_added'] = 'Sản phẩm đã được thêm vào cơ sở dữ liệu';
 
 
