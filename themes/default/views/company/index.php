@@ -1,10 +1,10 @@
 <?php (defined('BASEPATH')) OR exit('No direct script access allowed'); ?>
 
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#UTable').DataTable({
             "dom": '<"row"r>t<"row"<"col-md-6"i><"col-md-6"p>><"clear">',
-            "order": [[ 0, "desc" ]],
+            "order": [[0, "desc"]],
             "pageLength": Settings.rows_per_page,
             "processing": false, "serverSide": false,
             "buttons": []
@@ -38,12 +38,15 @@
                             echo '<tr>';
                             echo '<td>' . $company->partner_id . '</td>';
                             echo '<td>' . $company->name . '</td>';
-                            echoTextIfIsset(isset($company->email)?$company->email:'','td');
-                            echoTextIfIsset(isset($company->address)?$company->address:'','td');
-                            echoTextIfIsset(isset($company->phone)?$company->phone:'','td');
-                            echo '<td class="text-center" style="padding:6px;">' . ($company->status ? '<span class="label label-success">' . lang('Active') . '</span' : '<span class="label label-danger">' . lang('Unconfirmed') . '</span>') . '</td>';
+                            echoTextIfIsset(isset($company->email) ? $company->email : '', 'td');
+                            echoTextIfIsset(isset($company->address) ? $company->address : '', 'td');
+                            echoTextIfIsset(isset($company->phone) ? $company->phone : '', 'td');
+                            echo '<td class="text-center" style="padding:6px;">' .
+                                ($company->status == '1' ? '<span class="label label-success">' . lang('Active') . '</span>' :
+                                    ($company->status == '0' ?'<span class="label label-danger">' . lang('Unconfirmed') . '</span>':
+                                        '<span class="label label-warning">' . lang('Banned') . '</span>')) . '</td>';
                             echo '<td class="text-center" style="padding:6px;"><div class="btn-group btn-group-justified" role="group"><div class="btn-group btn-group-xs" role="group"><a class="tip btn btn-warning btn-xs" title="' . lang("profile") . '" href="' . admin_url('Company/profile/' . $company->partner_id) . '"><i class="fa fa-edit"></i></a></div>
-                            <div class="btn-group btn-group-xs" role="group"><a class="tip btn btn-danger btn-xs" title="' . lang("delete_user") . '" href="' . site_url('auth/delete/' . $company->partner_id) . '" onclick="return confirm(\''.lang('alert_x_user').'\')"><i class="fa fa-trash-o"></i></a></div></div></td>';
+                            <div class="btn-group btn-group-xs" role="group"><a class="tip btn btn-danger btn-xs" title="' . lang("delete_user") . '" href="' . site_url('auth/delete/' . $company->partner_id) . '" onclick="return confirm(\'' . lang('alert_x_user') . '\')"><i class="fa fa-trash-o"></i></a></div></div></td>';
                             echo '</tr>';
                         }
                         ?>

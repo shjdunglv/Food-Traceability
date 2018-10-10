@@ -23,7 +23,7 @@
                             </div>
                             <div class="form-group">
                                 <?= lang('address_of_company', 'address_of_company'); ?>
-                                <?= form_input('address_of_company',isset($company->phone)?$company->phone:'', 'class="form-control tip" id="address_of_company"  required="required"'); ?>
+                                <?= form_input('address_of_company',isset($company->address)?$company->address:'', 'class="form-control tip" id="address_of_company"  required="required"'); ?>
                             </div>
                             <div class="form-group">
                                 <?= lang('phone', 'phone'); ?>

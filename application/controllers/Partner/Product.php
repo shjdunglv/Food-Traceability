@@ -183,7 +183,6 @@ class Product extends PartnerController
         $this->load->library('pdf');
         $imgBarcode = $this->imgBarcode($id);
         $html = $this->htmlBarcode($imgBarcode);
-//        var_dump($html);
 //        $html = ob_get_clean();
         $this->pdf->loadHtml($html);
         $this->pdf->setPaper('A4', 'portrait');

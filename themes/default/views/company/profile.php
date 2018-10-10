@@ -12,29 +12,29 @@
                     <div id="edit_profile" class="tab-pane active">
                         <div class="col-lg-6">
                             <p><?= lang('update_info'); ?></p>
-                            <?=form_open('auth/edit_user/' . $company->partner_id);?>
+                            <?=form_open(admin_url('Company/updateCompany'));?>
                             <div class="form-group">
                                 <?= lang('code_of_company', 'code_of_company'); ?>
-                                <?= form_input('code_of_company', $company->partner_id, 'class="form-control tip" id="first_name"  required="required" disabled'); ?>
+                                <?= form_input('code_of_company', $company->partner_id, 'value ='.$company->partner_id.' class="form-control tip" id="code_of_company" disabled'); ?>
                             </div>
                             <div class="form-group">
                                 <?= lang('name_of_company', 'name_of_company'); ?>
-                                <?= form_input('name_of_company', $company->name, 'class="form-control tip" id="name_of_company"  required="required"'); ?>
+                                <?= form_input('name_of_company', $company->name, 'class="form-control tip" id="name_of_company"  '); ?>
                             </div>
                             <div class="form-group">
                                 <?= lang('address_of_company', 'address_of_company'); ?>
-                                <?= form_input('address_of_company',isset($company->phone)?$company->phone:'', 'class="form-control tip" id="address_of_company"  required="required"'); ?>
+                                <?= form_input('address_of_company',isset($company->address)?$company->address:'', 'class="form-control tip" id="address_of_company"  '); ?>
                             </div>
                             <div class="form-group">
                                 <?= lang('phone', 'phone'); ?>
-                                <?= form_input('phone', $company->phone, 'class="form-control tip" id="phone"  required="required"'); ?>
+                                <?= form_input('phone', $company->phone, 'class="form-control tip" id="phone" '); ?>
                             </div>
 
 
 
                             <div class="form-group">
                                 <?= lang('email', 'email'); ?>
-                                <?= form_input('email', isset($company->email)?$company->email:'', 'class="form-control tip" id="email"  required="required"'); ?>
+                                <?= form_input('email', isset($company->email)?$company->email:'', 'class="form-control tip" id="email"  '); ?>
                             </div>
                             <?php if ($user_type==1 && $id != $this->session->userdata('user_id')) { ?>
                                 <div class="panel panel-warning">
@@ -85,7 +85,7 @@
 
                             <div class="form-group">
                                 <?= lang("change_avatar", "change_avatar"); ?>
-                                <input type="file" data-browse-label="<?= lang('browse'); ?>" name="avatar" id="product_image" required="required"
+                                <input type="file" data-browse-label="<?= lang('browse'); ?>" name="avatar" id="product_image"
                                        data-show-upload="false" data-show-preview="false" accept="image/*"
                                        class="form-control file"/>
                             </div>

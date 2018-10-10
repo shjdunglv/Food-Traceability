@@ -97,7 +97,7 @@ class AdminController extends BaseController {
     }
 
 }
-class PartnerController extends BaseController {
+class PartnerController extends UserController {
 
     /**
      * Index Page for this controller.

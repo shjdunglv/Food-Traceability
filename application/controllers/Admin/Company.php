@@ -91,6 +91,66 @@ class Company extends AdminController
             $this->page_construct('company/profile', $this->data, $meta);
         }
     }
+    function updateCompany()
+    {
+            //upload file
+            if (!empty($_FILES['userfile'])) {
+
+                $this->load->library('upload');
+                $this->load->library('image_lib');
+
+                $config['upload_path'] = 'uploads/photo_passport';
+                $config['allowed_types'] = 'gif|jpg|png';
+//                $config['max_size'] = '500';
+//                $config['max_width'] = '800';
+//                $config['max_height'] = '800';
+                $config['overwrite'] = FALSE;
+                $config['encrypt_name'] = TRUE;
+                $this->upload->initialize($config);
+
+                if (!$this->upload->do_upload()) {
+                    $error = $this->upload->display_errors();
+                    $this->session->set_flashdata('error', $error);
+                    redirect(partner_url('Profile/profile'));
+                }
+
+
+                //create thumb
+                $photo = $this->upload->file_name;
+                $data['image'] = $photo;
+                createThumbs($photo);
+
+                //do insert to database
+                $data = array(
+                    'partner_id' => $this->input->post('id'),
+                    'address' => $this->input->post('address_of_company'),
+                    'phone' => $this->input->post('phone'),
+                    'name' => $this->input->post('name_of_company'),
+                    'photo_passport' => $photo
+                );
+                $rs = $this->Company_Model->updateCompanyInfoForAdmin($data);
+
+                // $this->tec->print_arrays($data, $items);
+            } //Validateion error
+            else {
+                $data = array(
+                    'partner_id' => $this->input->post('id'),
+                    'address' => $this->input->post('address_of_company'),
+                    'phone' => $this->input->post('phone'),
+                    'name' => $this->input->post('name_of_company'),
+                    'status' => $this->input->post('status')
+                );
+                $rs = $this->Company_Model->updateCompanyInfoForAdmin($data);
+            }
+            if($rs[0]==false){
+                $this->session->set_flashdata('error', lang('error_system'));
+                redirect(Admin_url('CCompany/listCompany'));
+            }
+            else{
+                $this->session->set_flashdata('success', lang('update_successly'));
+                redirect(Admin_url('Company/listCompany'));
+            }
+    }
     function _get_csrf_nonce() {
         $this->load->helper('string');
         $key = random_string('alnum', 8);
