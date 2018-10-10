@@ -119,31 +119,32 @@ class PartnerController extends BaseController {
         parent::__construct();
 
         if ($this->session->userdata('user_type')) {
+            $this->load->model('Company_Model');
             $this->user_type = $this->session->userdata('user_type');
-        }
-        if ($this->session->userdata('partner_id')) {
+            $this->partner_id = $this->session->userdata('partner_id');
             $this->user_id = $this->session->userdata('partner_id');
+            $this->Partner=1;
+            $user_data = $this->Company_Model->company($this->partner_id);
+            $this->session->set_userdata('user_data',$user_data);
+
+        }
+        else{
+            show_404();
+            exit();
         }
         if ($this->user_type != 2) {
             redirect(site_url('Auth/Login'));
             exit();
         }
 
-        if(empty($this->session->userdata('partner_status')) ||($this->session->userdata('partner_status')!='1'))
+        if(!$user_data->status)
         {
             $this->session->set_flashdata('warning', lang("access_denied"));
             redirect(partner_url('profile/profile'));
             exit();
         }
-        if(!empty($this->session->userdata('partner_id')))
-        {
-            $this->partner_id = $this->session->userdata('partner_id');
-            $this->Partner=1;
-        }
-        else{
-            show_404();
-            exit();
-        }
+
+
         if (!empty($this->session->userdata("company_info"))) {
             $this->data["store"] = $this->session->userdata("company_info");
         }
@@ -173,24 +174,25 @@ class UserController extends BaseController {
         parent::__construct();
 
         if ($this->session->userdata('user_type')) {
+            $this->load->model('Company_Model');
             $this->user_type = $this->session->userdata('user_type');
-        }
-        if ($this->session->userdata('partner_id')) {
+            $this->partner_id = $this->session->userdata('partner_id');
             $this->user_id = $this->session->userdata('partner_id');
+            $this->Partner=1;
+            $this->session->set_userdata('user_data',$this->Company_Model->company($this->partner_id));
+
+        }
+
+    else{
+            show_404();
+            exit();
         }
         if ($this->user_type != 2) {
             redirect(site_url('Auth/Login'));
             exit();
         }
-        if(!empty($this->session->userdata('partner_id')))
-        {
-            $this->partner_id = $this->session->userdata('partner_id');
-            $this->Partner=1;
-        }
-        else{
-            show_404();
-            exit();
-        }
+
+
         if (!empty($this->session->userdata("company_info"))) {
             $this->data["store"] = $this->session->userdata("company_info");
         }

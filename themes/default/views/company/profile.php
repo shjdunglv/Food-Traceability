@@ -12,10 +12,10 @@
                     <div id="edit_profile" class="tab-pane active">
                         <div class="col-lg-6">
                             <p><?= lang('update_info'); ?></p>
-                            <?=form_open('auth/edit_user/' . $company->id);?>
+                            <?=form_open('auth/edit_user/' . $company->partner_id);?>
                             <div class="form-group">
                                 <?= lang('code_of_company', 'code_of_company'); ?>
-                                <?= form_input('code_of_company', $company->id, 'class="form-control tip" id="first_name"  required="required" disabled'); ?>
+                                <?= form_input('code_of_company', $company->partner_id, 'class="form-control tip" id="first_name"  required="required" disabled'); ?>
                             </div>
                             <div class="form-group">
                                 <?= lang('name_of_company', 'name_of_company'); ?>
@@ -36,7 +36,7 @@
                                 <?= lang('email', 'email'); ?>
                                 <?= form_input('email', isset($company->email)?$company->email:'', 'class="form-control tip" id="email"  required="required"'); ?>
                             </div>
-                            <?php if ($Admin && $id != $this->session->userdata('user_id')) { ?>
+                            <?php if ($user_type==1 && $id != $this->session->userdata('user_id')) { ?>
                                 <div class="panel panel-warning">
                                     <div class="panel-heading"><?= lang('if_you_need_to_rest_password_for_user') ?></div>
                                     <div class="panel-body" style="padding: 5px;">
@@ -60,7 +60,7 @@
                                 <div class="form-group">
                                     <?= lang('status', 'status'); ?>
                                     <?php
-                                    $opt = array('' => '', 1 => lang('Active'), 0 => lang('Unconfirmed'), 2 => lang('Banned'));
+                                    $opt = array(1 => lang('Active'), 0 => lang('Unconfirmed'), 2 => lang('Banned'));
                                     echo form_dropdown('status', $opt, $company->status, 'id="status" data-placeholder="' . lang("select") . ' ' . lang("status") . '" class="form-control input-tip select2" style="width:100%;"');
                                     ?>
                                 </div>
