@@ -32,5 +32,5 @@
 </div>
 <script>
     setTimeout(function(){
-        window.location.href = 'theURLyouwant';
+        window.location.href = '<?=site_url("Auth/Login")?>';
     },5000)</script>

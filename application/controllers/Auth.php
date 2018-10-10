@@ -153,7 +153,7 @@ class Auth extends BaseController
         $rs = $this->process_register();
         if ($rs[0]) {
             $this->load->model("Auth_Model");
-            $this->Auth_Model->getFullPartnerInfo(array('partner_id'=>$rs[1]));
+            $this->Auth_Model->getFullPartnerInfo(array('partner.partner_id'=>$rs[1]));
 
             $this->session->set_flashdata('globalmsg', lang('register_successly_callback'));
             $this->session->set_flashdata('loadPage', true);
@@ -212,16 +212,4 @@ class Auth extends BaseController
         }
     }
 
-    function test()
-    {
-        $email = $this->input->post('email');
-//        $password = $this->input->post('password');
-        $credential = array('email' => "shjdunglv@gmail.com");
-
-        $this->db->select('*');
-        $this->db->join('company_info', 'company_info.partner_id = partner.partner_id');
-        $query = $this->db->get_where('partner', $credential);
-        var_dump($query->row());
-
-    }
 }
