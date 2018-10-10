@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class productType extends PartnerController
+class ProductType extends PartnerController
 {
     public function __construct()
     {

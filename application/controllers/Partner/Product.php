@@ -13,7 +13,7 @@ class Product extends PartnerController
 
     function index()
     {
-        $result = $this->Product_Model->getAllProduct();
+        $result = $this->Product_Model->getAllProductByPartnerID(array('partner_id'=>$this->user_id));
         ($result[0] == true) ? $this->data['product'] = $result[1] : $data['product'] = null;
 
         $this->data['page_title'] = lang('products');

@@ -64,10 +64,10 @@ class Product_Model extends CI_Model
         }
         return array(false,lang("error_info_not_exist"));
     }
-    function getAllProduct(){
+    function getAllProductByPartnerID($data){
         $this->db->select('*');
         $this->db->join('product_type', 'product_list.type_id = product_type.type_id');
-        $q = $this->db->get('product_list');
+        $q = $this->db->get_where('product_list',$data);
         if($q->num_rows()>0)
             return array(true,$q->result());
         else
