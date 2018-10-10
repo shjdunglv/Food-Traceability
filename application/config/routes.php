@@ -51,7 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['default_controller'] = 'Auth/Login';
 $route['404_override'] = 'errors/error404';
-$route['admin/dashboard'] = 'admin/company/listCompany';
+$route['admin/dashboard'] = 'Admin/company/listCompany';
 $route['Partner/partner/dashboard'] = 'Partner/Profile/Profile';
 $route['Partner/profile'] = 'Partner/Profile/Profile';
 $route['Admin'] = 'Auth/AdminLogin';
