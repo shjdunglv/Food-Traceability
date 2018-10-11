@@ -118,10 +118,10 @@ class Auth extends BaseController
                         $this->session->set_userdata('partner', $row);
                         $this->session->set_userdata('company_info', $company);
                         if(!$company->status){
-                            redirect(partner_url('partner/dashboard'), 'refresh');
+                            redirect(partner_url('dashboard'), 'refresh');
                         }
                         else
-                        redirect(partner_url('partner/dashboard'), 'refresh');
+                        redirect(partner_url('dashboard'), 'refresh');
                     }
                     $this->session->set_flashdata('error', lang('invalid_login'));
                     redirect(site_url('Auth/login'));
