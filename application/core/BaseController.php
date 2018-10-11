@@ -13,7 +13,13 @@ class BaseController extends CI_Controller {
         //load setting
         $this->theme = $this->db->get_where('settings', array('type' => 'system_theme'))->row()->description.'/views/';
         //get language setting in DB if not set default;
-        $this->language = 'vietnam';
+        if(!empty(get_cookie('language',true)))
+        {
+            $this->language = $this->input->cookie('language',true);
+        }
+        else
+            $this->language = $this->config->item('language');
+
         $this->load->language("app",$this->language);
         $this->load->language("error",$this->language);
         //load helper

@@ -1,4 +1,4 @@
-<?php (defined('BASEPATH')) OR exit('No direct script access allowed'); ?>
+<?php (defined('BASEPATH')) OR exit('No direct script access allowed');?>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -102,11 +102,11 @@
         <div class="col-xs-12">
             <div class="box box-primary">
                 <div class="box-header">
-            </div>
-            <div class="box-body">
-                <div class="table-responsive">
-                    <table id="prTables" class="table table-striped table-bordered table-hover" style="margin-bottom:5px;">
-                        <thead>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <table id="prTables" class="table table-striped table-bordered table-hover" style="margin-bottom:5px;">
+                            <thead>
                             <tr class="active">
                                 <th><?= lang("code"); ?></th>
                                 <th><?= lang("name"); ?></th>
@@ -114,19 +114,19 @@
                                 <th><?= lang("create_at"); ?></th>
                                 <th style="width:165px;"><?= lang("action"); ?></th>
                             </tr>
-                        </thead>
-                        <tbody>
-                        <?php if(isset($product))foreach($product as $product){?>
-                            <tr>
-                                <th><?=$product->product_id?></th>
-                                <th><?=$product->name?></th>
-                                <th><?=$product->type_id?></th>
-                                <th><?=$product->create_at?></th>
-                                <th style="width:165px;"><a href="#" data-url="<?=partner_url("product/printBarcode/$product->product_id")?>" class="btn btn-primary barcode"><i class="fa fa-barcode"></i></a></th>
-                            </tr>
-                        <?php } ?>
-                        </tbody>
-                        <tfoot>
+                            </thead>
+                            <tbody>
+                            <?php if(isset($productType))foreach($productType as $product){?>
+                                <tr>
+                                    <th><?=$product->type_id?></th>
+                                    <th><?=$product->type_name?></th>
+                                    <th><?=$product->sets?></th>
+                                    <th><?=$product->create_at?></th>
+                                    <th style="width:165px;"></th>
+                                </tr>
+                            <?php } ?>
+                            </tbody>
+                            <tfoot>
                             <tr>
                                 <th><input type="text" class="text_filter" placeholder="[<?= lang('code'); ?>]"></th>
                                 <th><input type="text" class="text_filter" placeholder="[<?= lang('name'); ?>]"></th>
@@ -136,29 +136,29 @@
 
                             </tr>
 
-                        </tfoot>
-                    </table>
-                </div>
+                            </tfoot>
+                        </table>
+                    </div>
 
-                <div class="modal fade" id="picModal" tabindex="-1" role="dialog" aria-labelledby="picModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-                                <button type="button" class="close mr10" onclick="window.print();"><i class="fa fa-print"></i></button>
-                                <h4 class="modal-title" id="myModalLabel">title</h4>
-                            </div>
-                            <div class="modal-body text-center">
-                                <img id="product_image" src="" alt="" />
-                            </div>
+                    <div class="modal fade" id="picModal" tabindex="-1" role="dialog" aria-labelledby="picModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+                                    <button type="button" class="close mr10" onclick="window.print();"><i class="fa fa-print"></i></button>
+                                    <h4 class="modal-title" id="myModalLabel">title</h4>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <img id="product_image" src="" alt="" />
+                                </div>
 
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="clearfix"></div>
+                    <div class="clearfix"></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </section>

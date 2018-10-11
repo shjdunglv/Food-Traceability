@@ -51,6 +51,7 @@
     $lang['my_sessions'] = 'My Sessions';
     $lang['activity'] = 'Activity';
     $lang['last_two_weeks'] = 'Last Two Weeks';
+    $lang['update'] = 'Cập nhật';
 
     // Auth
     $lang['sign_up'] = 'Sign Up';
@@ -319,3 +320,43 @@
     $lang['device'] = 'Device';
     $lang['browser'] = 'Browser';
     $lang['invalid_social_auth'] = "Something went wrong during the authentication process. Please try again.";
+$lang['list_company'] = 'Danh sách công ty';
+$lang['add_company'] = 'Thêm công ty';
+$lang['company'] = 'Công ty';
+$lang['profile'] = 'Trang cá nhân';
+$lang['member_since'] = 'Bắt đầu từ ngày';
+$lang['access_denied'] = 'Không có quyền truy cập';
+$lang['list_products'] = 'Danh sách sản phẩm';
+$lang['add_products'] = 'Thêm sản phẩm';
+$lang['import_products'] = 'Nhập file sản phẩm';
+$lang['products'] = 'Sản phẩm';
+$lang['register'] = 'Đăng ký';
+$lang['login'] = 'Đăng nhập';
+$lang['register_successly_callback'] = 'Đăng ký thành công, mời bạn cập nhật ảnh CMT để được xác nhận đăng ký';
+$lang['add_product_type'] = 'Thêm dòng sản phẩm';
+$lang['list_product_type'] = 'Danh sách dòng sản phẩm';
+$lang['product_type'] = 'Dòng sản phẩm';
+$lang['setting_product'] = 'Cấu hình dòng sản phẩm';
+$lang['create_at'] = 'Được tạo lúc';
+$lang['code'] = 'Mã';
+$lang['export_excel'] = 'Xuất file Excel';
+$lang['quick_search'] = 'Tìm kiếm nhanh:';
+$lang['first_page'] = 'Trang đầu';
+$lang['previous_page'] = 'Trang trước';
+$lang['next_page'] = 'Trang kế';
+$lang['last_page'] = 'Trang cuối';
+$lang['create_image_successly'] = 'Tạo ảnh mới thành công';
+$lang['photo_passport'] = 'Tạo ảnh mới thành công';
+$lang['update_successly'] = 'Cập nhật thành công';
+$lang['printBarcode'] = 'In mã Barcode';
+$lang['invalid_login'] = 'Thông tin đăng nhập không chính xác';
+$lang['import'] = 'Thêm';
+$lang['csv1'] = 'File CSV hợp lệ bao gồm các cột';
+$lang['csv2'] = 'Bạn phải tải file mẫu về';
+$lang['download_sample_file'] = 'Tải file mẫu';
+$lang['products_added'] = 'Sản phẩm đã được thêm vào cơ sở dữ liệu';
+$lang['add_product_type_success'] = 'Thêm dòng sản phẩm thành công';
+$lang['print_barcodes'] = 'Print Barcodes';
+
+
+

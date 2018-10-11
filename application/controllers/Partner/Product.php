@@ -31,8 +31,8 @@ class Product extends PartnerController
         //load all product type by id
         $productType = $this->Product_Model->getAllProductType(array('partner_id' => $this->partner_id));
         if ($productType[0] == false) {
-            show_404();
-            exit();
+            $this->session->set_flashdata('error', lang('error_must_create_product_type_first'));
+            redirect(partner_url("ProductType/add"));
         }
         $this->data["productType"] = $productType[1];
 
@@ -94,7 +94,7 @@ class Product extends PartnerController
                 if (!$this->upload->do_upload()) {
                     $error = $this->upload->display_errors();
                     $this->session->set_flashdata('error', $error);
-                    redirect("products/add");
+                    redirect(partner_url("Product/add"));
                 }
 
                 $photo = $this->upload->file_name;
@@ -113,7 +113,7 @@ class Product extends PartnerController
 
                 if (!$this->image_lib->resize()) {
                     $this->session->set_flashdata('error', $this->image_lib->display_errors());
-                    redirect("products/add");
+                    redirect(partner_url("Product/add"));
                 }
 
             }
@@ -121,7 +121,7 @@ class Product extends PartnerController
         } //Validateion error
         else {
             $this->session->set_flashdata('error', validation_errors());
-            redirect(partner_url('product/add'));
+            redirect(partner_url('Product/add'));
         }
 
 
@@ -129,11 +129,11 @@ class Product extends PartnerController
         $result = $this->Product_Model->addNewProduct($data);
         if ($result[0] == true) {
             $this->session->set_flashdata('message', lang("product_added"));
-            redirect('product/add');
+            redirect(partner_url('Product/add'));
 
         } else {
             $this->session->set_flashdata('error', $result[1]);
-            redirect(partner_url('product/add'));
+            redirect(partner_url('Product/add'));
 
         }
     }

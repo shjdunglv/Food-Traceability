@@ -18,13 +18,7 @@
         $('.mm_<?=$m?>').addClass('active');
         $('#<?=$m?>_<?=$v?>').addClass('active');
     });
-    var lang = new Array();
-    lang['code_error'] = '<?= lang('code_error'); ?>';
-    lang['r_u_sure'] = '<?= lang('r_u_sure'); ?>';
-    lang['register_open_alert'] = '<?= lang('register_open_alert'); ?>';
-    lang['code_error'] = '<?= lang('code_error'); ?>';
-    lang['r_u_sure'] = '<?= lang('r_u_sure'); ?>';
-    lang['no_match_found'] = '<?= lang('no_match_found'); ?>';
+
 </script>
 <script src="<?= $assets ?>dist/js/adminLTE.js" type="text/javascript"></script>
 <script src="<?= $assets ?>plugins/select2/select2.js" type="text/javascript"></script>

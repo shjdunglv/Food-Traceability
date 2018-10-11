@@ -40,10 +40,10 @@ class Product_Model extends CI_Model
 
     }
     function getAllProductType($data){
-        $partner = filterOnly(["type_id"],$data);
+        $partner = filterOnly(["partner_id"],$data);
         $q = $this->db->get_where('product_type', $partner);
         if ($q->num_rows() > 0) {
-            return array(true,$q->row());
+            return array(true,$q->result());
         }
         return array(false,lang("error_info_not_exist"));
     }

@@ -357,5 +357,8 @@ $lang['csv1'] = 'File CSV hợp lệ bao gồm các cột';
 $lang['csv2'] = 'Bạn phải tải file mẫu về';
 $lang['download_sample_file'] = 'Tải file mẫu';
 $lang['products_added'] = 'Sản phẩm đã được thêm vào cơ sở dữ liệu';
+$lang['add_product_type_success'] = 'Thêm dòng sản phẩm thành công';
+$lang['print_barcodes'] = 'In mã vạch';
+
 
 

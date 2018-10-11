@@ -10,6 +10,7 @@ $system_name  = $this->db->get_where('settings', array('type' => 'system_name'))
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link href="<?= $assets ?>dist/css/styles.css" rel="stylesheet" type="text/css"/>
     <link href="<?= $assets ?>plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css"/>
+    <link href="<?= $assets ?>plugins/iCheck/all.css" rel="stylesheet" type="text/css"/>
 
     <script src="<?= $assets ?>plugins/jQuery/jQuery-2.1.4.min.js"></script>
 </head>
@@ -43,7 +44,7 @@ $system_name  = $this->db->get_where('settings', array('type' => 'system_name'))
                             return basename($path);
                         }, glob(APPPATH . 'language/*', GLOB_ONLYDIR));
                         foreach ($scanned_lang_dir as $entry) { ?>
-                            <li><a href="<?= admin_url('admin/language/' . $entry); ?>"><img
+                            <li><a href="<?= site_url('language/index/' . $entry); ?>"><img
                                             src="<?= $assets; ?>images/<?= $entry; ?>.png"
                                             class="language-img"> &nbsp;&nbsp;<?= ucwords($entry); ?></a></li>
                         <?php } ?>
@@ -182,8 +183,7 @@ $system_name  = $this->db->get_where('settings', array('type' => 'system_name'))
                             <li id="products_import"><a href="<?= partner_url('product/import'); ?>"><i
                                             class="fa fa-circle-o"></i> <?= lang('import_products'); ?></a></li>
                             <li class="divider"></li>
-                            <li id="products_printBarcode"><a href="<?= partner_url('product/printBarcode'); ?>"  data-toggle="ajax"><i
-                                            class="fa fa-circle-o"></i> <?= lang('printBarcode'); ?></a></li>
+
                         </ul>
                     </li>
                     <li class="treeview mm_auth mm_user mm_suppliers">
