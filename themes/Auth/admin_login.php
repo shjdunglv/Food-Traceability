@@ -28,9 +28,9 @@
                     </div>
 
                     <p><input type="submit" class="btn btn-flat-login form-control" value="<?php echo lang("login") ?>"></p>
-                    
+
                 </div>
-                <div class="login-form-bottom clearfix">
+                <div class="clearfix">
 
                     <hr>
                     <?php echo form_close() ?>

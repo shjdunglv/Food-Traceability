@@ -200,8 +200,16 @@ class Product extends PartnerController
 //            $this->session->set_flashdata('error', lang('access_denied'));
 //            redirect('pos');
 //        }
+        $productType = $this->Product_Model->getAllProductType(array('partner_id' => $this->partner_id));
+        if ($productType[0] == false) {
+            $this->session->set_flashdata('error', lang('error_must_create_product_type_first'));
+            redirect(partner_url("ProductType/add"));
+        }
+        $this->data["productType"] = $productType[1];
+
         $this->load->helper('security');
         $this->form_validation->set_rules('userfile', lang("upload_file"), 'xss_clean');
+        $this->form_validation->set_rules('type', lang("product_type"), 'trim|required|xss_clean');
 
         if ($this->form_validation->run() == true) {
 
@@ -235,14 +243,36 @@ class Product extends PartnerController
                     fclose($handle);
                 }
 
-                array_shift($arrResult);
+                $keysOfFile = array_shift($arrResult);
 
-                $keys = array('code', 'name', 'category code');
+                $keys = array('code', 'name', 'type_id');
 
                 $final = array();
+                $type = $this->input->post('type');
 
+
+                //get setting of type
+                if(!($protype = $this->Product_Model->getSettingProductType(array('type_id'=>$type)))[0]){
+                    $this->session->set_flashdata('error', lang("category_not_exist") . " (" . $type . "). " . lang("category_not_exist"));
+                    redirect(partner_url("product/import"));
+                    exit();
+                }
+
+                //Add setting to keys
+                $sets = json_decode(json_decode($protype[1]->settings),true);
+                foreach ($sets as $key=>$value){
+                    $keys[] = $key;
+                }
+
+                //make key to data
                 foreach ($arrResult as $key => $value) {
-                    $final[] = array_combine($keys, $value);
+                    $errKey;
+                    if(count($keys)!==count($value)){
+                        $this->session->set_flashdata('error', lang("error_properties_incorrect") . " (" . $csv_pr['category code'] . "). " . lang("category_not_exist"));
+                        redirect(partner_url("product/import"));
+                    }
+                    else
+                        $final[] = array_combine($keys, $value);
                 }
 
                 if (sizeof($final) > 1001) {
@@ -250,31 +280,36 @@ class Product extends PartnerController
                     redirect(partner_url("product/import"));
                 }
                 foreach ($final as $csv_pr) {
+                    $arr = [];
                     if (($info =$this->Product_Model->getInfoProduct(array('product_id'=>$csv_pr['code'])))[0]) {
                         $this->session->set_flashdata('error', lang("error_check_product_code") . " (" . $csv_pr['code'] . "). " . lang("error_check_product_code"));
                     }
-                    if(! ($category = $this->Product_Model->getAllProductType(array('type_id'=>$csv_pr['category code'])))[0]) {
-                        $this->session->set_flashdata('error', lang("check_category") . " (" . $csv_pr['category code'] . "). " . lang("category_not_exist"));
-                        redirect(partner_url("product/import"));
-                    }
+
                     //check permission
 
-                    if($category[1]->partner_id != $this->user_id) {
+                    if($protype[1]->partner_id != $this->user_id) {
                         $this->session->set_flashdata('error', lang("category_not_exist") . " (" . $csv_pr['category code'] . "). " . lang("category_not_exist"));
-                        redirect(partner_url(partner_url("product/import")));
+                        redirect(partner_url("product/import"));
                     }
-                    $data[] = array(
+                    foreach ($sets as $key=>$value){
+                        $setting[$key] = $csv_pr[$key];
+                    }
+
+                    $arr[] = array(
                         'product_id' => $csv_pr['code'],
                         'name' => $csv_pr['name'],
-                        'type_id' => $category[1]->type_id
+                        'type_id' => $type,
+                        'create_at'=>fullDateTimeNow(),
                     );
+                    $data[] = array_merge($arr[0],array('data' =>json_encode($setting)));
+
                 }
                 //print_r($data); die();
             }
 
         }
 
-        if ($this->form_validation->run() == true && $this->Product_Model->addNewMultiProduct($data)) {
+        if ($this->form_validation->run() == true && ($this->Product_Model->addNewMultiProduct($data)[0]==true)) {
 
             $this->session->set_flashdata('message', lang("products_added"));
             redirect(partner_url('product/import'));

@@ -6,7 +6,19 @@
 </footer>
 </div>
 <div class="modal" data-easein="flipYIn" id="posModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
-<div class="modal" data-easein="flipYIn" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal" data-easein="flipYIn" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body text-center">
+                <div id="content-modal"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
 <div id="ajaxCall"><i class="fa fa-spinner fa-pulse"></i></div>
 <script type="text/javascript">
     var base_url = '<?=base_url();?>';

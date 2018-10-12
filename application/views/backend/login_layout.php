@@ -47,6 +47,7 @@ $system_name  = $this->db->get_where('settings', array('type' => 'system_name'))
 
     </head>
     <body>
+    <div class="wrapper">
 
     <div class="container">
     <div class="row">
@@ -60,6 +61,6 @@ $system_name  = $this->db->get_where('settings', array('type' => 'system_name'))
     </div>
 
 
-
+</div>
     </body>
 </html>

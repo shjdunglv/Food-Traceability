@@ -42,32 +42,12 @@ class Auth extends BaseController
     public function submit_login()
     {
         $credential = $this->validate_login();
-//        if(!empty($this->input->post('login_type'))&&($this->input->post('login_type')==1))
-//        {
-//            $this->process_login($credential,1);
-//
-//        }
-//        if(!empty($this->input->post('login_type'))&&($this->input->post('login_type')==2))
-//            $this->process_login($credential,2);
-
-//        $this->session->set_flashdata('error', lang('invalid_login'));
-//        redirect(site_url('Auth/Login'), 'refresh');
         $this->process_login($credential,2);
 
     }
     public function submit_admin_login()
     {
         $credential = $this->validate_login();
-//        if(!empty($this->input->post('login_type'))&&($this->input->post('login_type')==1))
-//        {
-//            $this->process_login($credential,1);
-//
-//        }
-//        if(!empty($this->input->post('login_type'))&&($this->input->post('login_type')==2))
-//            $this->process_login($credential,2);
-
-//        $this->session->set_flashdata('error', lang('invalid_login'));
-//        redirect(site_url('Auth/Login'), 'refresh');
         $this->process_login($credential,1);
 
     }
@@ -75,10 +55,17 @@ class Auth extends BaseController
     //Validating login from ajax request
     private function validate_login()
     {
-        $email = $this->input->post('email');
-        $password = $this->input->post('password');
-        $credential = array('email' => $email, 'password' => sha1($password));
-        return $credential;
+        $this->form_validation->set_rules('email', lang('email'), 'trim|required|valid_email');
+        $this->form_validation->set_rules('password', lang('password'), 'trim|required');
+        if ($this->form_validation->run() == false) {
+            $this->session->set_flashdata('error', validation_errors());
+            redirect(site_url());
+        } else {
+            $email = $this->input->post('email');
+            $password = $this->input->post('password');
+            $credential = array('email' => $email, 'password' => sha1($password));
+            return $credential;
+        }
     }
     private function process_login($credential,$type){
         switch ($type) {
@@ -90,6 +77,7 @@ class Auth extends BaseController
                     if ($query->num_rows() > 0) {
                         $row = $query->row();
                         $this->session->set_userdata('admin_login', '1');
+                        $this->session->set_userdata('user_data',$row);
                         $this->session->set_userdata('admin_id', $row->admin_id);
                         $this->session->set_userdata('login_user_id', $row->admin_id);
                         $this->session->set_userdata('name', $row->name);
@@ -167,10 +155,10 @@ class Auth extends BaseController
     private function process_register()
     {
         //create validation
-        $this->form_validation->set_rules('email', lang('email'), 'required');
-        $this->form_validation->set_rules('name', lang('name'), 'required');
-        $this->form_validation->set_rules('password', lang('password'), 'required|max_length[25]');
-        $this->form_validation->set_rules('comfirm_password', lang('comfirm_password'), 'required|matches[password]');
+        $this->form_validation->set_rules('email', lang('email'), 'trim|required|valid_email');
+        $this->form_validation->set_rules('name', lang('name'), 'trim|required');
+        $this->form_validation->set_rules('password', lang('password'), 'trim|required|max_length[25]');
+        $this->form_validation->set_rules('comfirm_password', lang('comfirm_password'), 'trim|required|matches[password]');
 
 
         //run validation

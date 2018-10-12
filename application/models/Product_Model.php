@@ -47,9 +47,10 @@ class Product_Model extends CI_Model
         }
         return array(false,lang("error_info_not_exist"));
     }
+
     function getSettingProductType($data){
         $partner = filterOnly(["type_id"],$data);
-        $this->db->select('type_id,type_name,settings');
+        $this->db->select('type_id,type_name,settings,partner_id');
         $q = $this->db->get_where('product_type', $partner);
         if ($q->num_rows() > 0) {
             return array(true,$q->row());
@@ -64,6 +65,7 @@ class Product_Model extends CI_Model
         }
         return array(false,lang("error_info_not_exist"));
     }
+
     function getAllProductByPartnerID($data){
         $this->db->select('*');
         $this->db->join('product_type', 'product_list.type_id = product_type.type_id');

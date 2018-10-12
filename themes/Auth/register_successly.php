@@ -13,7 +13,7 @@
                     <?php endif; ?>
 
                 </div>
-                <div class="login-form-bottom clearfix">
+                <div class="clearfix">
 
                     <hr>
 

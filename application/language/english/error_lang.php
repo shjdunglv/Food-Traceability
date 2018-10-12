@@ -8,6 +8,8 @@ $lang['error_system'] = 'Lỗi hệ thống';
 $lang['category_not_exist'] = 'Mã dòng sản phẩm không tồn tại trong hệ thống';
 $lang['error_must_create_product_type_first'] = 'Bạn chưa tạo dòng sản phẩm nào';
 $lang['add_product_type_failed'] = 'Thêm dòng sản phẩm thất bại';
+$lang['error_properties_incorrect'] = 'Thuộc tính sản phẩm không hợp lệ';
+
 
 
 

@@ -16,6 +16,7 @@ $system_name  = $this->db->get_where('settings', array('type' => 'system_name'))
          <!-- Styles -->
         <link href="<?php echo base_url();?>assets/login_page/css/login_layout.css" rel="stylesheet" type="text/css">
         <link href="<?php echo base_url();?>assets/login_page/css/elements.css" rel="stylesheet" type="text/css">
+        <link href="<?php echo base_url();?>assets/login_page/css/custom.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="<?php echo base_url('assets/login_page/css/font-awesome.min.css');?>">
 <!--        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />-->
 
@@ -47,7 +48,7 @@ $system_name  = $this->db->get_where('settings', array('type' => 'system_name'))
 
     </head>
     <body>
-
+    <div class="wrapper">
     <div class="container">
     <div class="row">
         <div class="col-lg-12 alerts">
@@ -87,7 +88,19 @@ $system_name  = $this->db->get_where('settings', array('type' => 'system_name'))
     </div>
     </div>
 
+        <ul class="bg-bubbles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
 
-
+</div>
     </body>
 </html>

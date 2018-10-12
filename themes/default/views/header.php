@@ -55,7 +55,7 @@ $system_name  = $this->db->get_where('settings', array('type' => 'system_name'))
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
                     <li class="hidden-xs hidden-sm"><a href="#" class="clock"></a></li>
-                    <li class="hidden-xs"><a href="<?= admin_url(); ?>" data-toggle="tooltip" data-placement="bottom"
+                    <li class="hidden-xs"><a href="<?= site_url(); ?>" data-toggle="tooltip" data-placement="bottom"
                                              title="<?= lang('dashboard'); ?>"><i class="fa fa-dashboard"></i></a></li>
                     <?php if (isset($user_type)) { ?>
                         <li class="hidden-xs"><a href="<?= admin_url('settings'); ?>" data-toggle="tooltip"
@@ -64,55 +64,23 @@ $system_name  = $this->db->get_where('settings', array('type' => 'system_name'))
                     <?php } ?>
 
 
-                    <?php if ($user_type == 1 && $this->session->userdata('store_id')) { ?>
-                        <li>
-                            <a href="<?= admin_url('reports/alerts'); ?>" data-toggle="tooltip" data-placement="bottom"
-                               title="<?= lang('alerts'); ?>">
-                                <i class="fa fa-bullhorn"></i>
-                                <span class="label label-warning"><?= $qty_alert_num; ?></span>
-                            </a>
-                        </li>
-                    <?php } ?>
-                    <?php if ($this->session->userdata('store_id')) { ?>
-                        <li class="dropdown notifications-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-bell-o"></i>
-                                <span class="label label-warning"><?= sizeof($suspended_sales); ?></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li class="header"><?= lang('recent_suspended_sales'); ?></li>
-                                <li>
-                                    <ul class="menu">
-                                        <li>
-                                            <?php
-                                            foreach ($suspended_sales as $ss) {
-                                                echo '<a href="' . admin_url('pos/?hold=' . $ss->id) . '" class="load_suspended">' . $this->tec->hrld($ss->date) . ' (' . $ss->customer_name . ')<br><strong>' . $ss->hold_ref . '</strong></a>';
-                                            }
-                                            ?>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="footer"><a
-                                            href="<?= admin_url('sales/opened'); ?>"><?= lang('view_all'); ?></a></li>
-                            </ul>
-                        </li>
-                    <?php } ?>
+
                     <li class="dropdown user user-menu" style="padding-right:5px;">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="<?= base_url('uploads/avatar/' . ($this->session->userdata('avatar') ? $this->session->userdata('avatar') : 'default_avatar.png')) ?>"
                                  class="user-image" alt="Avatar"/>
-                            <span class="hidden-xs"><?= $this->session->userdata('name'); ?></span>
+                            <span class="hidden-xs"><?= $this->session->userdata('user_data')->name; ?></span>
                         </a>
                         <ul class="dropdown-menu" style="padding-right:3px;">
                             <li class="user-header">
                                 <img src="<?= base_url('uploads/avatar/' . ($this->session->userdata('avatar') ? $this->session->userdata('avatar') : 'default_avatar.png')) ?>"
                                      class="img-circle" alt="Avatar"/>
                                 <?php
-                                if (!$user_type) {
+                                if ($user_type) {
                                     ?>
                                     <p>
-                                        <?= $this->session->userdata('email'); ?>
-                                        <small><?= lang('member_since') . ' ' . $this->session->userdata('created_on'); ?></small>
+                                        <?= $this->session->userdata('user_data')->email; ?>
+                                        <small><?= lang('member_since') . ' ' . $this->session->userdata('user_data')->create_at; ?></small>
                                     </p>
                                     <?php
                                 }

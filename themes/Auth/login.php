@@ -28,9 +28,9 @@
                     </div>
 
                     <p><input type="submit" class="btn btn-flat-login form-control" value="<?php echo lang("login") ?>"></p>
-                    <p class="decent-margin small-text"><a href="<?php echo site_url("login/forgotpw") ?>"><?php echo lang("forgot_your_password") ?></a> <span class="pull-right"><a href="<?php echo site_url("Auth/register") ?>"><?php echo lang("register") ?></a></span></p>
+                    <p class="decent-margin small-text"> <span class="pull-right"><a href="<?php echo site_url("Auth/register") ?>"><?php echo lang("register") ?></a></span></p>
                 </div>
-                <div class="login-form-bottom clearfix">
+                <div class="clearfix">
 
                     <hr>
                     <?php echo form_close() ?>

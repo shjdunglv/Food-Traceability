@@ -55,4 +55,5 @@ $route['(?i)admin/dashboard'] = 'Admin/company/listCompany';
 $route['(?i)Partner/dashboard'] = 'Partner/Profile/Profile';
 $route['(?i)Partner/profile'] = 'Partner/Profile/Profile';
 $route['(?i)Admin'] = 'Auth/AdminLogin';
+$route['(?i)logout'] = 'Auth/logout';
 $route['translate_uri_dashes'] = FALSE;
